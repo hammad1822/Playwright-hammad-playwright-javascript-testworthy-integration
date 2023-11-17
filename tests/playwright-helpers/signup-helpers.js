@@ -22,7 +22,7 @@ exports.signUp = class signUp {
     }
 
     async gotoSite() {
-        await this.page.goto('/');
+        await this.page.goto('https://www.demoblaze.com/');
     }
 
     async signUpNewUser(username,password){

@@ -1,3 +1,0 @@
-Dialog message: Sign up successful.
-Dialog message: Sign up successful.
-Dialog message: Sign up successful.
