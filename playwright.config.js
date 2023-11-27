@@ -31,18 +31,6 @@ module.exports = defineConfig({
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL: 'https://www.demoblaze.com/',
     //baseURL: 'https://restful-booker.herokuapp.com',
-    testStatus : 'FAILED', // Initialize the test status as 'FAILED'
-    run_id : 12404,
-    user_email : 'qa.admin@yopmail.com',
-    tma_key : 'qfst2zqwZX24iQVmKMNj',
-    project_key : 'tevW0gOrOed7ERbz0Gwg',
-    case_id_1 : 407483,
-    case_id_2 : 407484,
-    case_id_3 : 407485,
-    case_id_4 : 407486,
-    case_id_5 : 407487,
-
-
 
     // ignoreHTTPSErrors: true,
     // extraHTTPHeaders: {

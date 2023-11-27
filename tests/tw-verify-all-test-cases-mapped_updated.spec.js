@@ -2,9 +2,6 @@ import { test, expect, request } from '@playwright/test';
 const { signUp } = require('./playwright-helpers/signup-helpers.js');
 const { purchaseItem } = require('./playwright-helpers/purshase-item-helpers.js');
 const { testWorthyAPIs } = require('./playwright-helpers/testworthy-api-functions-set_case_status.js');
-//const { testStatus, run_id, user_email, tma_key, project_key, case_id_1, case_id_2, case_id_3, case_id_4, case_id_5} = require('../playwright.config.js');
-const apiData = require('./playwright-constants/constants.js');
-
 
 test.describe('Demo - TestWorthy Integration with Playwright/JavaScript', () => {
     
@@ -31,13 +28,11 @@ test.describe('Demo - TestWorthy Integration with Playwright/JavaScript', () => 
 
     test.afterEach(async () => {
         // ---- Call "add_results_for_cases" API function ---- //
-        // ---- All API Parameters are define in constants.js file ----//
-        await testWorthyAPIs_Obj.add_results_for_cases(apiData.tw_Creds.run_id, apiData.tw_Creds.user_email, apiData.tw_Creds.tma_key, apiData.tw_Creds.project_key, case_id, testStatus);            
+        await testWorthyAPIs_Obj.add_results_for_cases(case_id, testStatus);            
     });
 
-    test.only('Case -1: Verify use can sign up a new account', async () => {
+    test('Case -1: Verify use can sign up a new account', async () => {
         try {
-            //await page.goto('https://example.com');
             const userSignUp = new signUp(page);
             await userSignUp.signUpNewUser(randomUsername, randomPassword);
             await userSignUp.login(randomUsername,randomPassword);
@@ -71,7 +66,6 @@ test.describe('Demo - TestWorthy Integration with Playwright/JavaScript', () => 
 
     test('Case -2: Verify user can add single item to the cart', async () => {
         try {
-            //await page.goto('https://example.com');
             const userPurchaseItem = new purchaseItem(page);
             await userPurchaseItem.addFirstProductToCart();
             await userPurchaseItem.gotoCart();
@@ -79,7 +73,7 @@ test.describe('Demo - TestWorthy Integration with Playwright/JavaScript', () => 
             console.log('Single Item Amount = ' + totalAmountText);
             await expect(userPurchaseItem.totalAmount).toHaveText(totalAmountText); 
                 try {
-                    //totalAmountText = totalAmountText + 1;        //Uncomment this to fail this test case
+                    totalAmountText = totalAmountText + 1;        //Uncomment this to fail this test case
                     await expect(userPurchaseItem.totalAmount).toHaveText(totalAmountText);
                     console.log('Second Try - Total Amount is = ' + totalAmountText);
                     testStatus = 'PASSED';
@@ -102,7 +96,6 @@ test.describe('Demo - TestWorthy Integration with Playwright/JavaScript', () => 
 
     test('Case -3: Verify user can add Multiple items to the cart', async () => {
         try {
-            //await page.goto('https://example.com');
             const userPurchaseItem = new purchaseItem(page);
             await userPurchaseItem.addMultipleProductsToCart();
             await userPurchaseItem.gotoCart();
@@ -133,7 +126,6 @@ test.describe('Demo - TestWorthy Integration with Playwright/JavaScript', () => 
 
     test('Case -4: Verify user can delete products from the cart', async () => {
         try {
-            //await page.goto('https://example.com');
             const userPurchaseItem = new purchaseItem(page);
             await userPurchaseItem.addMultipleProductsToCart();   
             await userPurchaseItem.gotoCart();
@@ -203,8 +195,6 @@ test.describe('Demo - TestWorthy Integration with Playwright/JavaScript', () => 
             console.log('Test Status = ' + testStatus);
         }
     });
-
-
     
     // test('Map Test Case Staus - Linear API Call', async ({ request }) => {
 

@@ -1,4 +1,4 @@
-const apiData = require('../playwright-constants/constants.js');
+const apiData = require('./constants.js');
 
 class testWorthyAPIs{
 
