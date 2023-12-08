@@ -1,16 +1,18 @@
+//const apiData = require('../playwright-constants/constants.js');
 const apiData = require('./constants.js');
 
-class testWorthyAPIs{
+let testCaseDataArray = [];      //This global array will store the Case Titles and Case IDs from "get_run_cases" API response
+let case_id;    // Global variable for assigning Test Case IDs to use in the tests
+
+class testWorthyAPIs{ 
 
   constructor() {
     // You can initialize any properties here
   }
 
-  //run_id, user_email, tma_key, project_key, case_id, testStatus   // Can be parameters for add_results_for_cases() function
-
   //*** Function to map test results on TestWorthy ***//
   //**************************************************//
-  async add_results_for_cases(case_id, testStatus) {
+  async add_results_for_cases(testStatus) {
     if (testStatus === 'PASSED') {
       testStatus = 1;
         console.log('Test Status = ' + testStatus);
@@ -19,12 +21,10 @@ class testWorthyAPIs{
           console.log('Test Status = ' + testStatus);
     }
     const apiUrl = 'https://10plabs.com/api/tests/add_results_for_cases/'+apiData.tw_Creds.run_id; // take suit_id as input from user
-    
-    // const apiUrl = 'http://10plabs.com/api/tests/add_results_for_cases/12404';
-    //url: https://{hostname}/api/tests/add_results_for_cases/{run_id}
 
     // Set the NODE_TLS_REJECT_UNAUTHORIZED environment variable to 0
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+    console.log('Case ID in Map Status Function', case_id);
 
       //*** API Body ***//
       const requestData = {"Results": [
@@ -32,8 +32,8 @@ class testWorthyAPIs{
                             "case_id": case_id,
                             "status_id": testStatus,
                             "Comment": "test from postman",
-                            "AssignedToId": null,
-                            "Defects": "2306" // To remove as it is optional
+                            //"AssignedToId": null,
+                            //"Defects": "2306" // To remove as it is optional
                             }
                             ]
                           }
@@ -46,9 +46,8 @@ class testWorthyAPIs{
               'X-TMA-KEY': apiData.tw_Creds.tma_key,          // Input from ../playwright-constants/constants.js
               'X-PROJECT-KEY': apiData.tw_Creds.project_key,  // Input from ../playwright-constants/constants.js
               'Content-Type': 'application/json',
-              // For Cookies - Make a login call and fetch cookie from the responcse
+              //--- For Cookies - Make a login call and fetch cookie from the responcse ---//
               'Cookie': apiData.tw_Creds.cookies              // Input from ../playwright-constants/constants.js
-              // 'Cookie': '.TCookie=CfDJ8NvEpa8b6O9HsycfRueM_XPldcpm-g1iLwtYPNGlIiH1MQuHPgC55ZlRtnIsvb1KQiO7HTUCcT0AkGrfMETadhLMnTCi4PrmdpWX2bAU2e-RvbiZUfEZvHuKGrsDetY3zPu5IlJX__XZIIRAikNXbAtLQJOmQK2Oevo-qmbrSb1YJEXGWA5ytXp3oW1S5ZYkqBo3HDVndHrDnXQfN04i8OeBGfBKu-Hxj8JghuJRY8j_OBrTjaLj5NeHVMfYV7Lrup3NZkchF3xpI8eANWhF6l5Cv1EN92kIqCtFWQeoQn743OJwk3Onw4RNRlw910IpYVUG9CtmqY5_E5v-v0hVohRVlLTpcQwZEg2BvQiJBcbjwdWJh1n374Tdn0lu73JLOYdS-njY_DelUkKPtG5sgs36bbu94xDKY50uDhHgpUOWraa9BAW-TtnvXznJL_ok-g',
           },
           body: JSON.stringify(requestData),
       };
@@ -74,6 +73,69 @@ class testWorthyAPIs{
       throw error; // Re-throw the error for handling at a higher level, if needed
     }
   }
+
+  async get_case_id_api() {
+    const apiUrl = 'https://10plabs.com/api/tests/get_run_cases/'+apiData.tw_Creds.run_id; // take suit_id as input from user"
+
+    // Set the NODE_TLS_REJECT_UNAUTHORIZED environment variable to 0
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+      
+      const requestOptions = {
+          method: 'GET',
+          headers: {
+              'X-USER-EMAIL': apiData.tw_Creds.user_email,    // Input from ../playwright-constants/constants.js
+              'X-TMA-KEY': apiData.tw_Creds.tma_key,          // Input from ../playwright-constants/constants.js
+              'X-PROJECT-KEY': apiData.tw_Creds.project_key,  // Input from ../playwright-constants/constants.js
+              'Content-Type': 'application/json',
+              //--- For Cookies - Make a login call and fetch cookie from the responcse  ---//
+              'Cookie': apiData.tw_Creds.cookies              // Input from ../playwright-constants/constants.js
+          },
+      };
+  
+    try {
+      const response = await fetch(apiUrl, requestOptions);
+  
+      if (!response.ok) {
+        // Check for a non-successful response (e.g., 404, 500)
+        throw new Error(`API request failed with status: ${response.status}`);
+      }  
+      const data = await response.json();
+      //console.log(JSON.stringify(data, null, 2))    //To print the nested response data
+      
+      //--- Fetching the Case IDs and Case Titles fron "get_run_cases" API response and push into the array "testCaseDataArray" ---//
+      const tests = data.tests;
+        for (const test of tests) {
+            const caseId = test.case.id;
+            const caseTitle = test.case.title;
+            //console.log('Case ID:', caseId);  //Print Case Ids, uncomment it if you want to print them
+            //console.log('Case Title:', caseTitle); //Print Case Titles, uncomment it if you want to print them
+            
+            //Storing all the test case ids and tiles into the array
+            testCaseDataArray.push({ caseId, caseTitle });
+        }
+        console.log('Array Data', testCaseDataArray); //Print array data
+
+      return data; // You can return the data for further use
+    } catch (error) {
+      console.error('API Request Error:', error);
+      throw error; // Re-throw the error for handling at a higher level, if needed
+    } 
+  }
+
+  async matchAndAssignCaseId(currentTestTitle) {
+    // Find the matching test in the array
+    const matchingTest = testCaseDataArray.find(test => test.caseTitle === currentTestTitle);
+
+    if (matchingTest) {
+        // If a match is found, assign the corresponding caseId to the global variable
+        case_id = matchingTest.caseId;
+        console.log('Match found. Assigned caseId:', case_id);
+    } else {
+        console.error('No match found for the test title:', currentTestTitle);
+        // You might want to handle this case accordingly (e.g., throw an error)
+    }
+    console.log('Case ID: ', case_id);
+    console.log('Case Title: ', matchingTest.caseTitle);
+  }
 }
 module.exports = { testWorthyAPIs };
-  
