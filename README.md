@@ -1,13 +1,12 @@
 # Automated Test Execution with TestWorthy Integration
 
 ## Overview
-This repository contains automation scripts for executing tests using Selenium (Java) and updating the TestWorthy test run folder. The test case titles in the scripts should match the titles in the TestWorthy test run folder.
+This repository contains automation scripts for executing tests using Playwright-JavaScript and updating the TestWorthy test run folder. The test case titles in the scripts should match the titles in the TestWorthy test run folder.
 Follow the steps below to configure and run the scripts successfully.
 
 ## Prerequisites
 
-* Java Development Kit (JDK) installed on your machine
-* Selenium WebDriver for Java
+* Playwright wiht JavaScript
 * TestWorthy account with access to the desired project
 * TestWorthy API key (You can obtain this from your TestWorthy account settings)
 
