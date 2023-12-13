@@ -1,19 +1,16 @@
 module.exports = {
-    user: {
-        fullname : 'Jimmyy',
-        country : 'canada',
-        city : 'Toronto',
-        creditcard :'4588526658525689',
-        month : 'July',
-        year : '1990'
-    },
-
     tw_Creds: {
+        baseURL : 'https://10plabs.com/api/tests/',
+        get_runs_url : 'get_runs/',
+        add_results_for_cases_url : 'add_results_for_cases/',
+        get_run_cases_url : 'get_run_cases/',
+        suite_id : '6425',
+        run_title: 'JS Integration Test Run 1',
         run_id : 12404,
         user_email : 'qa.admin@yopmail.com',
         tma_key : 'qfst2zqwZX24iQVmKMNj',
         project_key : 'tevW0gOrOed7ERbz0Gwg',
-        cookies: '.TCookie=CfDJ8NvEpa8b6O9HsycfRueM_XPldcpm-g1iLwtYPNGlIiH1MQuHPgC55ZlRtnIsvb1KQiO7HTUCcT0AkGrfMETadhLMnTCi4PrmdpWX2bAU2e-RvbiZUfEZvHuKGrsDetY3zPu5IlJX__XZIIRAikNXbAtLQJOmQK2Oevo-qmbrSb1YJEXGWA5ytXp3oW1S5ZYkqBo3HDVndHrDnXQfN04i8OeBGfBKu-Hxj8JghuJRY8j_OBrTjaLj5NeHVMfYV7Lrup3NZkchF3xpI8eANWhF6l5Cv1EN92kIqCtFWQeoQn743OJwk3Onw4RNRlw910IpYVUG9CtmqY5_E5v-v0hVohRVlLTpcQwZEg2BvQiJBcbjwdWJh1n374Tdn0lu73JLOYdS-njY_DelUkKPtG5sgs36bbu94xDKY50uDhHgpUOWraa9BAW-TtnvXznJL_ok-g',
+        cookies: '.TCookie=CfDJ8NvEpa8b6O9HsycfRueM_XOmyat48Ea2TExgTUYqx-11FPALnOKkWAdw2BvmtvD_2tSNlvU2By76FugdxrF7HecxHC2g6JOuqqb-BR8RDcVuy-KeAbeAP0OdbHsdqp0HxWzgK7nEtDdsSwqdyqQ9JUVJsStprEpm7Tno0VRcTqZgvzBIv66GQTJ-dLpkyQ4rx6UHkhYBkW15PhbkgrQ1UYWnNPuaTPR30DQYlMkqnWYT6d6pAUpMDlvOASDanr_0gTTp3jUE55d_QlWoyFQijdDh2v_ygt4sz2vi4mrKqkJYUr9lDoDkyVdab0bD013akGyPmxnRlGnrEx5U2mId2J8kTYwBxX4hZioowAFE2i6XcCz5dNYUiJvBt8eveDDiTv8jzasp3ytK9VCIsWOWyxzA2cQan-aEq-Ku82Aq8EyTFYXSfVstF5pr2lAz1i2jcw',
     }
 }   
 

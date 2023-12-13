@@ -1,15 +1,15 @@
 import { test, expect, request } from '@playwright/test';
 const { signUp } = require('./playwright-helpers/signup-helpers.js');
 const { purchaseItem } = require('./playwright-helpers/purshase-item-helpers.js');
-// const { testWorthyAPIs } = require('./playwright-helpers/testworthy-api-functions-set_case_status.js');
 const { testWorthyAPIs } = require('./TestWorthy-JS-Integration/testworthy-api-functions-set_case_status.js');
 
 test.describe('Demo - TestWorthy Integration with Playwright/JavaScript', () => {
     
     let page;
-    let testStatus = 'FAILED';      // Initialize the test status as 'FAILED'. Mandatory to have this as  
-                                    // PlayWright doesn't have it's own Test Status variable
-    const testWorthyAPIs_Obj = new testWorthyAPIs();    // Object of Testworthy API Class
+    // Initialize the test status as 'FAILED'. Mandatory to have this as PlayWright doesn't have it's own Test Status variable
+    let testStatus = 'FAILED'; 
+    // Object of Testworthy API Class
+    const testWorthyAPIs_Obj = new testWorthyAPIs();
 
     //--- This is for randome username and password generation, you can use your own mechanism for this ---/
     const randomUsername = Math.random().toString(36).substring(2,7);
@@ -21,6 +21,9 @@ test.describe('Demo - TestWorthy Integration with Playwright/JavaScript', () => 
         //--- API - Get Test Cases IDs ---//
         //*** Call this method here in beforeAll to get all the Test Cases IDs and Titles present in the Test Run on TestWorthy before start the execution of automated Test Cases. It will help in matching and assigning Test Case IDs to the relevant Automated Test Case ***/
         await testWorthyAPIs_Obj.get_case_id_api();
+        //--- API - GET Runs via Suite ID ---//
+        //*** This API will fetch all the test runs using a specific suite id ***/
+        await testWorthyAPIs_Obj.get_run_from_suit_id();
         
         page = await browser.newPage();
         const userSignUp = new signUp(page);

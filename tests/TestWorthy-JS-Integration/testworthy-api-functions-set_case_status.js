@@ -1,13 +1,86 @@
 //const apiData = require('../playwright-constants/constants.js');
 const apiData = require('./constants.js');
-
-let testCaseDataArray = [];      //This global array will store the Case Titles and Case IDs from "get_run_cases" API response
-let case_id;    // Global variable for assigning Test Case IDs to use in the tests
+//This global array will store the Case Titles and Case IDs from "get_run_cases" API response
+let testCaseDataArray = [];
+// Global variable for assigning Test Case IDs to use in the tests
+let case_id;
+// Global variables to dynamically handle the run ids to use in a specific call
+let run_id;
+let run_title;
 
 class testWorthyAPIs{ 
 
   constructor() {
     // You can initialize any properties here
+  }
+
+  //*** Function to get test runs from a specific suite id from TestWorthy ***//
+  //**************************************************************************//
+  async get_run_from_suit_id() {
+    // Take suite_id as input from user in a constant file"
+    const apiUrl =  apiData.tw_Creds.baseURL
+                    +apiData.tw_Creds.get_runs_url
+                    +apiData.tw_Creds.suite_id;
+
+    // Set the NODE_TLS_REJECT_UNAUTHORIZED environment variable to 0
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+      
+      const requestOptions = {
+          method: 'GET',
+          headers: {
+              // All header values are defined in constants.js
+              'X-USER-EMAIL': apiData.tw_Creds.user_email,    
+              'X-TMA-KEY': apiData.tw_Creds.tma_key,          
+              'X-PROJECT-KEY': apiData.tw_Creds.project_key,
+              'Content-Type': 'application/json',
+              'Cookie': apiData.tw_Creds.cookies,
+          },
+      };
+  
+    try {
+      const response = await fetch(apiUrl, requestOptions);
+  
+      if (!response.ok) {
+        // Check for a non-successful response (e.g., 404, 500)
+        throw new Error(`API request failed with status: ${response.status}`);
+      }  
+      const data = await response.json();
+
+      if (data.runs && data.runs.length > 0) {
+        const runs = data.runs;
+  
+        // Find a run with a specific name
+        const targetRunName = apiData.tw_Creds.run_title;
+        const targetRun = runs.find(run => run.name === targetRunName);
+  
+        if (targetRun) {
+          console.log('Target Run Title is:', targetRun.name);
+          console.log('Target Run ID is:', targetRun.id);
+  
+          // Store or use the values as needed
+          run_id = targetRun.id;
+          run_title = targetRun.name;
+          console.log('Final Run ID:', run_id);
+          console.log('Final Run Title:', run_title);
+          // You can return the target run for further use
+          return targetRun;
+        } else {
+          console.log(`No run found with the name: ${targetRunName}`);
+          // Or handle the case where the target run is not found
+          return null;
+        }
+      } else {
+        console.log('No runs found in the response.');
+        // Or handle the case where no runs are found
+        return null;
+      }
+      // You can return the data for further use
+      return data;
+    } catch (error) {
+      console.error('API Request Error:', error);
+      // Re-throw the error for handling at a higher level, if needed
+      throw error;
+    } 
   }
 
   //*** Function to map test results on TestWorthy ***//
@@ -20,7 +93,8 @@ class testWorthyAPIs{
           testStatus = 5
           console.log('Test Status = ' + testStatus);
     }
-    const apiUrl = 'https://10plabs.com/api/tests/add_results_for_cases/'+apiData.tw_Creds.run_id; // take suit_id as input from user
+    const apiUrl = apiData.tw_Creds.baseURL
+                    +apiData.tw_Creds.add_results_for_cases_url+run_id;
 
     // Set the NODE_TLS_REJECT_UNAUTHORIZED environment variable to 0
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
@@ -32,8 +106,6 @@ class testWorthyAPIs{
                             "case_id": case_id,
                             "status_id": testStatus,
                             "Comment": "test from postman",
-                            //"AssignedToId": null,
-                            //"Defects": "2306" // To remove as it is optional
                             }
                             ]
                           }
@@ -42,12 +114,12 @@ class testWorthyAPIs{
           method: 'POST',
           //*** API Header ***//
           headers: {
-              'X-USER-EMAIL': apiData.tw_Creds.user_email,    // Input from ../playwright-constants/constants.js
-              'X-TMA-KEY': apiData.tw_Creds.tma_key,          // Input from ../playwright-constants/constants.js
-              'X-PROJECT-KEY': apiData.tw_Creds.project_key,  // Input from ../playwright-constants/constants.js
+              // All header values are defined in constants.js
+              'X-USER-EMAIL': apiData.tw_Creds.user_email,   
+              'X-TMA-KEY': apiData.tw_Creds.tma_key,         
+              'X-PROJECT-KEY': apiData.tw_Creds.project_key, 
               'Content-Type': 'application/json',
-              //--- For Cookies - Make a login call and fetch cookie from the responcse ---//
-              'Cookie': apiData.tw_Creds.cookies              // Input from ../playwright-constants/constants.js
+              'Cookie': apiData.tw_Creds.cookies,            
           },
           body: JSON.stringify(requestData),
       };
@@ -66,16 +138,21 @@ class testWorthyAPIs{
   
       // Process and use the API response data as needed
       console.log('API Response Data:', data);
-  
-      return data; // You can return the data for further use
+      // You can return the data for further use
+      return data;
     } catch (error) {
       console.error('API Request Error:', error);
-      throw error; // Re-throw the error for handling at a higher level, if needed
+      // Re-throw the error for handling at a higher level, if needed
+      throw error;
     }
   }
 
+  //*** Function to get case ids to map cases on TestWorthy ***//
+  //***********************************************************//
   async get_case_id_api() {
-    const apiUrl = 'https://10plabs.com/api/tests/get_run_cases/'+apiData.tw_Creds.run_id; // take suit_id as input from user"
+    const apiUrl = apiData.tw_Creds.baseURL
+                    +apiData.tw_Creds.get_run_cases_url
+                    +apiData.tw_Creds.run_id;
 
     // Set the NODE_TLS_REJECT_UNAUTHORIZED environment variable to 0
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
@@ -83,12 +160,12 @@ class testWorthyAPIs{
       const requestOptions = {
           method: 'GET',
           headers: {
-              'X-USER-EMAIL': apiData.tw_Creds.user_email,    // Input from ../playwright-constants/constants.js
-              'X-TMA-KEY': apiData.tw_Creds.tma_key,          // Input from ../playwright-constants/constants.js
-              'X-PROJECT-KEY': apiData.tw_Creds.project_key,  // Input from ../playwright-constants/constants.js
+              // All header values are defined in constants.js
+              'X-USER-EMAIL': apiData.tw_Creds.user_email,   
+              'X-TMA-KEY': apiData.tw_Creds.tma_key,         
+              'X-PROJECT-KEY': apiData.tw_Creds.project_key, 
               'Content-Type': 'application/json',
-              //--- For Cookies - Make a login call and fetch cookie from the responcse  ---//
-              'Cookie': apiData.tw_Creds.cookies              // Input from ../playwright-constants/constants.js
+              'Cookie': apiData.tw_Creds.cookies,             
           },
       };
   
@@ -100,25 +177,25 @@ class testWorthyAPIs{
         throw new Error(`API request failed with status: ${response.status}`);
       }  
       const data = await response.json();
-      //console.log(JSON.stringify(data, null, 2))    //To print the nested response data
+      //To print the nested response data
+      //console.log(JSON.stringify(data, null, 2));
       
       //--- Fetching the Case IDs and Case Titles fron "get_run_cases" API response and push into the array "testCaseDataArray" ---//
       const tests = data.tests;
         for (const test of tests) {
             const caseId = test.case.id;
             const caseTitle = test.case.title;
-            //console.log('Case ID:', caseId);  //Print Case Ids, uncomment it if you want to print them
-            //console.log('Case Title:', caseTitle); //Print Case Titles, uncomment it if you want to print them
-            
             //Storing all the test case ids and tiles into the array
             testCaseDataArray.push({ caseId, caseTitle });
         }
-        console.log('Array Data', testCaseDataArray); //Print array data
-
-      return data; // You can return the data for further use
+        //Print array data
+        console.log('Array Data', testCaseDataArray);
+      // You can return the data for further use
+      return data;
     } catch (error) {
       console.error('API Request Error:', error);
-      throw error; // Re-throw the error for handling at a higher level, if needed
+      // Re-throw the error for handling at a higher level, if needed
+      throw error;
     } 
   }
 
