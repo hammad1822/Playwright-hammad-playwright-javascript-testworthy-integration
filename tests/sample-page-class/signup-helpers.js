@@ -6,14 +6,11 @@ exports.signUp = class signUp {
     * @param {import('@playwright/test').Page} page
     */
     constructor(page) {
+        // Locators
         this.page = page;
         this.signUpLink = page.getByRole('link', { name: 'Sign up' });
         this.signUpUsername = page.getByLabel('Username:');
         this.signUpPassword = page.getByLabel('Password:');
-        page.once('dialog', dialog => {
-            console.log(`Dialog message: ${dialog.message()}`);
-            dialog.dismiss().catch(() => {});
-        });
         this.signUpButton = page.getByRole('button', { name: 'Sign up' });
         this.loginLink = page.getByRole('link', { name: 'Log in' });
         this.loginUsername = page.locator('#loginusername');

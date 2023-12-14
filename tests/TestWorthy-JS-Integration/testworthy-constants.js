@@ -5,7 +5,7 @@ module.exports = {
         baseAPIURL : 'https://10plabs.com/api/tests/',
         // Please go through the steps to get suit ID from readme file ### Obtaining Suite ID section
         suite_id : '6425', 
-        run_title: 'JS Integration Test Run 1',
+        run_title: 'Run Two',
         user_email : 'qa.admin@yopmail.com',
         tma_key : 'qfst2zqwZX24iQVmKMNj',
         project_key : 'tevW0gOrOed7ERbz0Gwg',

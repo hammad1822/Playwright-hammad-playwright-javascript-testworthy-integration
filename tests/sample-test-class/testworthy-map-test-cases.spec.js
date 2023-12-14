@@ -1,7 +1,7 @@
 import { test, expect, request } from '@playwright/test';
-const { signUp } = require('../page/signup-helpers.js');
-const { purchaseItem } = require('../page/purshase-item-helpers.js');
-const { testWorthyAPIs } = require('../TestWorthy-JS-Integration/testworthy-api-functions-set_case_status.js');
+const { signUp } = require('../sample-page-class/signup-helpers.js');
+const { purchaseItem } = require('../sample-page-class/purshase-item-helpers.js');
+const { testWorthyAPIs } = require('../TestWorthy-JS-Integration/testworthy-api-functions.js');
 
 test.describe('Demo - TestWorthy Integration with Playwright/JavaScript', () => {
     
@@ -24,9 +24,6 @@ test.describe('Demo - TestWorthy Integration with Playwright/JavaScript', () => 
         //--- API - Get Test Cases IDs ---//
         //*** Call this method here in beforeAll to get all the Test Cases IDs and Titles present in the Test Run on TestWorthy before start the execution of automated Test Cases. It will help in matching and assigning Test Case IDs to the relevant Automated Test Case ***/
         await testWorthyAPIs_Obj.get_case_id_api();
-        // //--- API - GET Runs via Suite ID ---//
-        // //*** This API will fetch all the test runs using a specific suite id ***/
-        // await testWorthyAPIs_Obj.get_run_from_suit_id();
         
         page = await browser.newPage();
         const userSignUp = new signUp(page);

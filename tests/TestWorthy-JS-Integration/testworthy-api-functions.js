@@ -1,4 +1,4 @@
-const apiData = require('./constants.js');
+const apiData = require('./testworthy-constants.js');
 //This global array will store the Case Titles and Case IDs from "get_run_cases" API response
 let testCaseDataArray = [];
 // Global variable for assigning Test Case IDs to use in the tests
