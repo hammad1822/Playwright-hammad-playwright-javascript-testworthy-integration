@@ -149,7 +149,7 @@ class testWorthyAPIs{
   //***********************************************************//
   async get_case_id_api() {
     const apiUrl = apiData.tw_Creds.baseAPIURL+"get_run_cases/"
-                    +apiData.tw_Creds.run_id;
+                    +run_id;
 
     // Set the NODE_TLS_REJECT_UNAUTHORIZED environment variable to 0
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';

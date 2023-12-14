@@ -1,4 +1,5 @@
 import { defineConfig } from '@playwright/test';
+const userData = require('../../constants.js');
 
 exports.signUp = class signUp {
     /**
@@ -22,7 +23,7 @@ exports.signUp = class signUp {
     }
 
     async gotoSite() {
-        await this.page.goto('/');
+        await this.page.goto(userData.baseURL);
     }
 
     async signUpNewUser(username,password){

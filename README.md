@@ -30,6 +30,15 @@ cd <repository_directory>
 * Navigate to the desired Suite.
 * Obtain the suite ID from the URL. It should look like .../Project/OverView/<suite_id>.
 
+### Running the Automation Scripts
+* Selenium (Java)
+Execute the following command in the terminal to run the Selenium (Java) automation script:
+<Command to execute the test case>
+ 
+* Playwright (JavaScript)
+Execute the following command in the terminal to run the Playwright (JavaScript) automation script:
+<npx playwright test>
+
 
 ### Additional Notes
 
