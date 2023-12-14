@@ -10,19 +10,18 @@ Follow the steps below to configure and run the scripts successfully.
 * TestWorthy account with access to the desired project
 * TestWorthy API key (You can obtain this from your TestWorthy account settings)
 
-
 ## Configuration
 
 * Clone the repository to your local machine:
 git clone <repository_url>
 cd <repository_directory>
 
-* Edit a configuration file named <Config.json> under resources and fill in the following details: 
-    * BaseURL = www.testworthy.com
+* Edit a configuration file named <TestWorthy-JS-Integration/constants.js> and fill in the following details: 
+    * baseAPIURL = www.testworthy.com
     * user_email = your_email@example.com
     * project_key = your_project_key
-    * TestRunName: = "Regression Cycle"  # Update this after creating a test run folder.
-    * api_key = TestWorthy API key
+    * run_title: = "Regression Cycle"  # Update this after creating a test run folder.
+    * tma_key = TestWorthy API key
     * suite_id = Project Suite Id
 
 ### Obtaining Suite ID

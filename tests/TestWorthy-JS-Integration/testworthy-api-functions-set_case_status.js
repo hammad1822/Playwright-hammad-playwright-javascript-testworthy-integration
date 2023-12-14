@@ -17,8 +17,7 @@ class testWorthyAPIs{
   //**************************************************************************//
   async get_run_from_suit_id() {
     // Take suite_id as input from user in a constant file"
-    const apiUrl =  apiData.tw_Creds.baseURL
-                    +apiData.tw_Creds.get_runs_url
+    const apiUrl =  apiData.tw_Creds.baseAPIURL+"get_runs/"
                     +apiData.tw_Creds.suite_id;
 
     // Set the NODE_TLS_REJECT_UNAUTHORIZED environment variable to 0
@@ -92,8 +91,8 @@ class testWorthyAPIs{
           testStatus = 5
           console.log('Test Status = ' + testStatus);
     }
-    const apiUrl = apiData.tw_Creds.baseURL
-                    +apiData.tw_Creds.add_results_for_cases_url+run_id;
+    const apiUrl = apiData.tw_Creds.baseAPIURL
+                    +"add_results_for_cases/"+run_id;
 
     // Set the NODE_TLS_REJECT_UNAUTHORIZED environment variable to 0
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
@@ -149,8 +148,7 @@ class testWorthyAPIs{
   //*** Function to get case ids to map cases on TestWorthy ***//
   //***********************************************************//
   async get_case_id_api() {
-    const apiUrl = apiData.tw_Creds.baseURL
-                    +apiData.tw_Creds.get_run_cases_url
+    const apiUrl = apiData.tw_Creds.baseAPIURL+"get_run_cases/"
                     +apiData.tw_Creds.run_id;
 
     // Set the NODE_TLS_REJECT_UNAUTHORIZED environment variable to 0
