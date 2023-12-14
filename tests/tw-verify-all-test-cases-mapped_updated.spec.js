@@ -192,12 +192,10 @@ test.describe('Demo - TestWorthy Integration with Playwright/JavaScript', () => 
             console.log('Total Amount of Items Purchased = ' + totalAmountText);
             await expect(userPurchaseItem.totalAmount).toHaveText(totalAmountText);
             await userPurchaseItem.placeOrder();
-            await expect(userPurchaseItem.placeOrderFormSuccessfullyPurchasedPopup).toHaveText('Thank you for your purchase!');
-            
+            await expect(userPurchaseItem.placeOrderFormSuccessfullyPurchasedPopup).toHaveText('Thank you for your purchase!');            
             const thankyouText = await userPurchaseItem.placeOrderFormSuccessfullyPurchasedPopup.textContent();
             console.log('Text on order confirmation pop-up = ' + thankyouText);
             await expect(userPurchaseItem.placeOrderFormSuccessfullyPurchasedPopup).toHaveText(thankyouText);
-
 
             if (await thankyouText != 'Thank you for your purchase!') {
                 console.log('Amounts are matched and test is Failed.');

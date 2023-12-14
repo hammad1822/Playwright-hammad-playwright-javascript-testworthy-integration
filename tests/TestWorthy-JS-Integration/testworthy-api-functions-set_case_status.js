@@ -1,4 +1,3 @@
-//const apiData = require('../playwright-constants/constants.js');
 const apiData = require('./constants.js');
 //This global array will store the Case Titles and Case IDs from "get_run_cases" API response
 let testCaseDataArray = [];
